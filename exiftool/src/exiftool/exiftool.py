@@ -32,6 +32,13 @@ instead. Isn't that nicer!
 
 '''
 
+exiftool_all=__all__=(
+  'exiftool_all',
+  'ComplexNamespace',
+  'exiftool',
+  'readfile',
+)
+
 import datetime,json,os,re,subprocess,sys
 from types import SimpleNamespace
 
@@ -95,8 +102,10 @@ def exiftool(*args):
   return rc
 
 def readfile(filename):
-  '''Return a python object (an instance of class ComplexNamespace)
-  whose attributes contain the grouped EXIF tags of the given file.'''
+  '''
+  Return a python object (an instance of exiftool.ComplexNamespace)
+  whose attributes contain the grouped EXIF tags of the given file.
+  '''
 
   out,err=exiftool('-g','-json',filename)
   if err:
@@ -119,10 +128,10 @@ def readfile(filename):
             dd[key]=datetime.datetime(t['year'],t['mon'],t['day'],t['hour'],t['min'],t['sec'],t['cs']*10000)
   return ComplexNamespace(**d)
 
-if __name__=='__main__':
-  for filename in sys.argv[1:]:
-    exif=readfile(filename)
-    #for var in dir(exif):
-    #  if not var.startswith('__'):
-    #    print(f"{var}: {type(getattr(exif,var))}")
-    print(f"=== {filename} ===\n{exif}\n")
+#if __name__=='__main__':
+#  for filename in sys.argv[1:]:
+#    exif=readfile(filename)
+#    #for var in dir(exif):
+#    #  if not var.startswith('__'):
+#    #    print(f"{var}: {type(getattr(exif,var))}")
+#    print(f"=== {filename} ===\n{exif}\n")
